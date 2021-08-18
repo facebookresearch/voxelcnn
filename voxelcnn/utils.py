@@ -67,14 +67,14 @@ def setup_logger(name=None, save_file=None, rank=0, level=logging.DEBUG):
     messages will be logged to disk files as well.
 
     When multiprocessing, this function must be called inside each process, but only
-    the master process (rank == 0) will log to stdout and files.
+    the main process (rank == 0) will log to stdout and files.
 
     Args:
         name (str, optional): Name of the logger. Default: None, will use the root
             logger
         save_file (str, optional): Path to a file where log messages are saved into.
             Default: None, do not log to file
-        rank (int): Rank of the process. Default: 0, the master process
+        rank (int): Rank of the process. Default: 0, the main process
         level (int): An integer of logging level. Recommended to be one of
             logging.DEBUG / INFO / WARNING / ERROR / CRITICAL. Default: logging.DEBUG
     """
@@ -82,7 +82,7 @@ def setup_logger(name=None, save_file=None, rank=0, level=logging.DEBUG):
     logger.setLevel(level)
     logger.propagate = False
 
-    # Don't log results for the non-master process
+    # Don't log results for the non-main process
     if rank > 0:
         logging.disable(logging.CRITICAL)
         return logger
